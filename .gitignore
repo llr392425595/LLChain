@@ -1,0 +1,17 @@
+# app
+.venv
+venv/
+app/.venv/
+app/venv/
+app/*.pyc
+*__pycache__*
+
+# Mac file
+.DS_Store
+
+dist/
+build/
+
+# Idea file
+.idea
+*.iml
