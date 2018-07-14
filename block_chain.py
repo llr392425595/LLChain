@@ -1,3 +1,7 @@
+import json
+import hashlib
+
+
 class BlockChain(object):
     def __init__(self):
         self.chain = []
@@ -17,8 +21,8 @@ class BlockChain(object):
 
     @staticmethod
     def hash(block):
-        # Hashes a Block
-        pass
+        block_string = json.dumps(block, sort_keys=True).encode()
+        return hashlib.sha256(block_string).hexdigest()
 
     @property
     def last_block(self):
