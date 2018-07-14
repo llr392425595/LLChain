@@ -7,9 +7,13 @@ class BlockChain(object):
         # Creates a new Block and adds it to the chain
         pass
 
-    def new_transaction(self):
-        # Adds a new transaction to the list of transactions
-        pass
+    def new_transaction(self, sender=None, recipient=None, amount=None):
+        self.current_transactions.append({
+            'sender': sender,
+            'recipient': recipient,
+            'amount': amount
+        })
+        return self.last_block['index'] + 1
 
     @staticmethod
     def hash(block):
@@ -18,5 +22,4 @@ class BlockChain(object):
 
     @property
     def last_block(self):
-        # Returns the last Block in the chain
-        pass
+        return self.chain[-1]
