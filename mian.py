@@ -47,7 +47,7 @@ def new_transaction():
 
     required = ['sender', 'recipient', 'amount']
     if not all(k in values for k in required):
-        return 'Missisng values', 400
+        return 'Missing values', 400
 
     index = block_chain.new_transaction(values['sender'], values['recipient'], values['amount'])
 
