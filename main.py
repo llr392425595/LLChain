@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 
-from model.chain_service import ChainService
-from model.proof_generator import ProofGenerator
+from service.chain_service import ChainService
+from component.proof_generator import ProofGenerator
 
 app = Flask(__name__)
 
