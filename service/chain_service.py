@@ -1,3 +1,8 @@
+from urllib.parse import urlparse
+
+import requests
+
+from component.chain_validator import ChainValidator
 from model.block import Block, BlockHeader, BlockBody
 
 
@@ -5,6 +10,7 @@ class ChainService(object):
     def __init__(self):
         self.block_chain = []
         self.current_transactions = []
+        self.nodes = set()
         self.__create_genesis_block()
 
     @property
@@ -34,3 +40,35 @@ class ChainService(object):
 
     def __create_genesis_block(self):
         self.new_block(previous_hash=1, proof=100)
+
+    def register_node(self, address):
+        parsed_url = urlparse(address)
+        print(parsed_url)
+        self.nodes.add(parsed_url.netloc)
+
+    def resolve_conflicts(self):
+        neighbours = self.nodes
+        new_chain = None
+
+        # We're only looking for chains longer than ours
+        max_length = len(self.block_chain)
+
+        # Grab and verify the chains from all the nodes in our network
+        for node in neighbours:
+            response = requests.get(f'http://{node}/chain')
+
+            if response.status_code == 200:
+                length = response.json()['length']
+                chain = response.json()['chain']
+
+                # Check if the length is longer and the chain is valid
+                if length > max_length and ChainValidator.valid_chain(chain):
+                    max_length = length
+                    new_chain = chain
+
+        # Replace our chain if we discovered a new, valid chain longer than ours
+        if new_chain:
+            self.block_chain = new_chain
+            return True
+
+        return False
