@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
 
+from component.my_json_encoder import MyJSONEncoder
 from service.chain_service import ChainService
 from component.proof_generator import ProofGenerator
 
 app = Flask(__name__)
+app.json_encoder = MyJSONEncoder
 
 chain_service = ChainService()
 proof_generator = ProofGenerator()
