@@ -18,7 +18,7 @@ def welcome():
 
 @app.route('/mine', methods=['POST'])
 def mine():
-    last_proof = chain_service.last_block.block_header.proof
+    last_proof = chain_service.last_block.proof
     current_proof = proof_generator.proof_of_work(last_proof)
     node_address = request.get_json()["node_address"]
     # 提供奖励，sender为0
@@ -31,10 +31,10 @@ def mine():
     block = chain_service.new_block(current_proof, None)
 
     response = {
-        'index': block.block_header.index,
-        'transactions': block.block_body.transactions,
-        'proof': block.block_header.proof,
-        'previous_hash': block.block_header.previous_hash
+        'index': block.index,
+        'transactions': block.transactions,
+        'proof': block.proof,
+        'previous_hash': block.previous_hash
     }
     return jsonify(response), 200
 
